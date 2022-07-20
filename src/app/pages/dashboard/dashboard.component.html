@@ -1,0 +1,48 @@
+<!-- ============================================================== -->
+<!-- Stats box -->
+<!-- ============================================================== -->
+<div *ngIf="user.role === 'ADMIN'" class="row">
+
+    <div class="col-lg-3">
+        <app-cards [coleccion]="'trabajadores'"></app-cards>
+    </div>
+
+    <div class="col-lg-3">
+        <app-cards [coleccion]="'usuarios'"></app-cards>
+    </div>
+
+    <div class="col-lg-3">
+        <app-cards [coleccion]="'empresas'"></app-cards>
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- Sales overview chart -->
+<!-- ============================================================== -->
+
+
+<!-- ============================================================== -->
+<!-- PROXIMOS PREVENTIVOS -->
+<!-- ============================================================== -->
+
+<div *ngIf="user.role === 'ADMIN'" class="card">
+    <div class="card-body">
+        <div class="d-flex">
+            <h4 class="card-title"><span class="lstick bg-warning"></span> Ofertas laborales sin asignar </h4>
+            <div class="ml-auto">
+                <span class="badge badge-warning fs-5"> {{ totalProximos | number }} </span>
+            </div>
+        </div>
+    </div>
+    <div class="activity-box">
+        <div class="card-body">
+            <!-- Activity item-->
+            <div class="text-center" *ngIf="products.length === 0">
+
+                <h3 class="mb-0 text-muted tex-break text-center"> No existen registros... </h3>
+
+            </div>
+            <!-- Activity item-->
+        </div>
+    </div>
+</div>
