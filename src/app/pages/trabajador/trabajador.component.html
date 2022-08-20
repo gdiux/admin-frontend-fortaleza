@@ -1,0 +1,143 @@
+<!-- CONTROL - CLIENT -->
+<div *ngIf="worker" class="d-flex align-item-center flex-wrap gap-2 mb-3">
+
+    <div class="d-flex flex-row bg-white pl-0 shadow-sm mt-2">
+        <div class="p-10 bg-success" [ngClass]="{'bg-warning': worker.type === 'Aspirante'}">
+            <h3 class="text-white box m-b-0">
+                <i class=" mdi mdi-account-outline fs-2"></i>
+            </h3>
+        </div>
+        <div class="align-self-center m-l-20 pr-3">
+            <h4 class="m-b-0  text-break" [ngClass]="{'text-warning': worker.type === 'Aspirante', 'text-success': worker.type === 'Trabajador'}"> Status </h4>
+            <small class="text-muted m-b-0">
+                {{ worker.type }}
+            </small>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+<!-- CONTROL - CLIENT -->
+
+<div *ngIf="worker" class="d-flex flex-row flex-wrap gap-2">
+
+    <div class="row">
+
+        <!-- INFORMACION -->
+
+        <div class="col-lg-8 col-xlg-9 col-md-7">
+
+            <div class="card-body bg-white">
+                <div class="row">
+                    <div class="col-md-3 col-xs-6 b-r"> <strong>Telefono</strong>
+                        <br>
+                        <p class="text-muted">
+                            <i class="mdi mdi-phone"></i> {{ worker.phone || '--- ----' }}
+                        </p>
+                    </div>
+                    <div class="col-md-auto col-xs-6 b-r"> <strong>Email</strong>
+                        <br>
+                        <p class="text-muted text-break">
+                            <i class="mdi mdi-mail-ru"></i> {{ worker.email || '----@----.com' }}
+                        </p>
+                    </div>
+                    <div class="col-md-3 col-xs-6"> <strong>Ciudad</strong>
+                        <br>
+                        <p class="text-muted text-break">
+                            <i class="mdi mdi-map-marker-circle"></i> {{ worker.city || '-------------' }}
+                        </p>
+                    </div>
+                </div>
+                <hr>
+                <h4 class="font-medium m-t-30">Breve descripción</h4>
+                <p class="m-t-30">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi.
+                    Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
+                    book. It has survived not only five centuries </p>
+                <p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+
+                <h4 class="font-medium m-t-30">Experiencias o Habilidades</h4>
+                <hr>
+
+                <h5 class="m-t-30">Wordpress <span class="pull-right">80%</span></h5>
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%; height:6px;"> <span class="sr-only">50% Complete</span> </div>
+                </div>
+                <h5 class="m-t-30">HTML 5 <span class="pull-right">90%</span></h5>
+                <div class="progress">
+                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%; height:6px;"> <span class="sr-only">50% Complete</span> </div>
+                </div>
+                <h5 class="m-t-30">Javascript <span class="pull-right">50%</span></h5>
+                <div class="progress">
+                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%; height:6px;"> <span class="sr-only">50% Complete</span> </div>
+                </div>
+                <h5 class="m-t-30">Photoshop <span class="pull-right">70%</span></h5>
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%; height:6px;"> <span class="sr-only">50% Complete</span> </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- INFORMACION -->
+
+        <!-- IMG -->
+        <div class="col-lg-4 col-xlg-3 col-md-5">
+            <div class="card">
+                <div class="card-body little-profile text-center">
+                    <div class="pro-img m-t-20"><img src="../assets/images/users/4.jpg" alt="user"></div>
+                    <h3 class="m-b-0"> {{ worker.name }} </h3>
+
+                    <button type="button" class="btn waves-effect waves-light btn-primary btn-sm">Asignar Trabajo</button>
+                    <ul class="list-inline soc-pro m-t-30">
+                        <li><a href="javascript:void(0)"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-facebook-square"></i></a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h4 class="card-title"><span class="lstick"></span> Archivos</h4>
+                    <ul class="feeds">
+
+                        <li *ngIf="worker.attachments.length === 0">
+                            <div class="bg-light-info">
+                                <i class="mdi mdi-alert-circle-outline"></i>
+                            </div> No exiten archivos guardados
+
+                            <span class="text-muted">Justo ahora</span>
+                        </li>
+
+                        <li class="py-2" *ngFor="let archivo of worker.attachments; let i = index">
+
+
+                            <div class="bg-light-info">
+                                <i class="mdi mdi-file-outline"></i>
+                            </div>
+                            <a download href="https://fortalezatemjob.ddns.net/api/uploads/archivos/{{archivo.attachment}}" target="_blank" rel="noopener noreferrer">
+
+                                {{ i + 1 }}
+                                <i class="mdi mdi-arrow-down-bold text-end"></i>
+
+                            </a>
+                            <span class="text-muted text-break mt-1"> {{archivo.attachment}} </span>
+
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <!-- IMG -->
+
+    </div>
+
+</div>

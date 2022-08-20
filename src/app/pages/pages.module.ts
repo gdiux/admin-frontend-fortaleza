@@ -29,6 +29,7 @@ import { CorrectivoComponent } from './correctivo/correctivo.component';
 import { ProductoComponent } from './producto/producto.component';
 import { CardsComponent } from './dashboard/components/cards/cards.component';
 import { TrabajadoresComponent } from './trabajadores/trabajadores.component';
+import { TrabajadorComponent } from './trabajador/trabajador.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { TrabajadoresComponent } from './trabajadores/trabajadores.component';
     CorrectivoComponent,
     ProductoComponent,
     CardsComponent,
-    TrabajadoresComponent
+    TrabajadoresComponent,
+    TrabajadorComponent
   ],
   exports:[
     DashboardComponent,

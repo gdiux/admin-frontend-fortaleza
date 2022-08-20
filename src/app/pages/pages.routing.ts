@@ -17,6 +17,7 @@ import { PreventivoComponent } from './preventivo/preventivo.component';
 import { CorrectivoComponent } from './correctivo/correctivo.component';
 import { ProductoComponent } from './producto/producto.component';
 import { TrabajadoresComponent } from './trabajadores/trabajadores.component';
+import { TrabajadorComponent } from './trabajador/trabajador.component';
 
 
 // COMPONENTS
@@ -39,6 +40,7 @@ const routes: Routes = [
           { path: 'producto/:id', component: ProductoComponent, data:{ title: 'Producto' } },
           { path: 'perfil/:id', component: PerfilComponent, data:{ title: 'Perfil' } },
           { path: 'trabajadores', component: TrabajadoresComponent, data:{ title: 'Trabajadores' } },
+          { path: 'trabajador/:id', component: TrabajadorComponent, data:{ title: 'Trabajador' } },
           { path: 'usuarios', component: UsuariosComponent, data:{ title: 'Usuarios' } },
           { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
         ] 

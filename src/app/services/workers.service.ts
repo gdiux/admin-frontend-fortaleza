@@ -48,6 +48,13 @@ export class WorkersService {
   }
 
   /** ================================================================
+   *   LOAD WORKER ID
+  ==================================================================== */
+  loadWorkerId(id: string){
+    return this.http.get<{worker: Worker, ok: boolean}>(`${base_url}/workers/${id}`, this.headers);
+  }
+
+  /** ================================================================
    *   UPDATE CLIENTS
   ==================================================================== */
   updateClient( formData:any, id: string ){

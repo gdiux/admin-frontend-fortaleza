@@ -60,7 +60,12 @@
 
                             <tr *ngFor="let worker of workers">
                                 <!-- Worker -->
-                                <td> {{ worker.name }} </td>
+                                <td>
+                                    <a [routerLink]="['/dashboard/trabajador', worker.wid]" el="noopener noreferrer">
+
+                                        {{ worker.name }} 
+                                    </a>
+                                </td>
                                 <td> {{ worker.cedula }} </td>
                                 <td> {{ worker.phone }} </td>
                                 <td> {{ worker.address }} </td>

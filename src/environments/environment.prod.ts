@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  base_url: 'https://adminfortaleza.ddns.net/api'
+  base_url: 'http://localhost:5000/api'
 };
