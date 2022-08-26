@@ -57,7 +57,7 @@ export class WorkersService {
   /** ================================================================
    *   UPDATE CLIENTS
   ==================================================================== */
-  updateClient( formData:any, id: string ){
+  updateWorker( formData:any, id: string ){
     return this.http.put<{ok: boolean, worker: Worker}>(`${base_url}/workers/${id}`, formData, this.headers);
   }
 

@@ -8,7 +8,7 @@
 
                     <div>
                         <h4 class="card-title">Lista de Clientes</h4>
-                        <h6 class="card-subtitle">Total: {{ total | number }}</h6>
+                        <h6 class="card-subtitle">Total: {{ total! | number }}</h6>
 
                     </div>
                     <div>
@@ -168,7 +168,7 @@ MODAL AGREGAR CLIENTE
 </div>
 
 <!-- ========================================================= 
-MODAL EDITAR CLIENTE
+MODAL EDITAR CLIENTE 
 ======================================================== -->
 <div id="edit-client" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" #modalNewUser>
     <div class="modal-dialog">
@@ -224,96 +224,6 @@ MODAL EDITAR CLIENTE
 
                     <button type="submit" [disabled]="savingNew" class="btn btn-info waves-effect btn-block">Guardar</button>
                 </form>
-
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ========================================================= 
-MODAL CARGAR PRODUCTOS DEL CLIENTE
-======================================================== -->
-<div id="products-client" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalproducts-client" aria-hidden="true" #modalNewUser>
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalproducts-client">Lista de productos del cliente</h4>
-            </div>
-            <div class="modal-body">
-
-
-                <div class="card mb-0">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div>
-                                <h4 class="card-title mb-0">
-                                    <span class="lstick"></span>{{ clientSelected?.name }}
-                                </h4>
-                                <p class="mb-0">
-                                    <span class="lstick"></span>
-                                    <small><i class="mdi mdi-map-marker"></i> {{clientSelected?.address}} </small>
-                                </p>
-                                <p class="mb-0">
-                                    <span class="lstick"></span>
-                                    <small>Total: {{totalProductsClient}} </small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="table-responsive m-t-20 no-wrap">
-                            <table class="table vm no-th-brd pro-of-month">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Codigo</th>
-                                        <th>Estado</th>
-                                        <th>MP</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    <tr *ngIf="cargandoProductos">
-                                        <td colspan="4">
-                                            <h3 class="mb-0 animated pulse text-center py-4">Cargando...</h3>
-                                        </td>
-                                    </tr>
-
-                                    <tr *ngIf="PorductsClient.length === 0 ">
-                                        <td colspan="4">
-                                            <h3 class="mb-0 animated fadeIn text-center py-4">Este cliente no tiene ningun producto asignado</h3>
-                                        </td>
-                                    </tr>
-
-                                    <ng-container *ngIf="!cargandoProductos">
-                                        <tr *ngFor="let product of PorductsClient" class="animated fadeIn">
-                                            <td>
-                                                <span class="round">
-                                                <img [src]="product.img! | imagen: 'products'" alt="user" width="50">
-                                            </span>
-                                            </td>
-                                            <td>
-                                                <a data-dismiss="modal" [routerLink]="['/dashboard/producto/', product.pid!]">
-                                                {{ product.code! }} 
-                                            </a>
-                                            </td>
-                                            <td>
-                                                <span class="label" [ngClass]="{ 'label-inverse':  product.estado === 'Instalada', 'label-success':  product.estado === 'Disponible', 'label-warning':  product.estado === 'Mantenimiento'}"> 
-                                                {{ product.estado }} 
-                                            </span>
-                                            </td>
-                                            <td> {{ product.next! | date: 'MMM d - y' }} </td>
-                                        </tr>
-                                    </ng-container>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
 
             </div>
             <div class="modal-footer">

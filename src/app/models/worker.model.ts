@@ -1,5 +1,12 @@
-export class Worker {
+interface _skills {
+    name: string,
+    years: number,
+    fecha: Date,
+    id: string
+}
 
+export class Worker {
+    
     constructor(
         public name: string,
         public cedula: string,
@@ -15,7 +22,9 @@ export class Worker {
         public img: string,
         public fecha: Date,
         public wid: string,
-        public attachments: any[]
+        public description: string,
+        public attachments: any[],
+        public skills: _skills[]
         
     ){}
 

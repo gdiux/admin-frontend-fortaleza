@@ -70,11 +70,7 @@
                 <!-- ============================================================== -->
                 <!-- End Comment -->
                 <!-- ============================================================== -->
-                <li class="nav-item">
-                    <a type="button" class="nav-link waves-effect waves-dark" data-toggle="modal" data-target="#buscar-product">
-                        <i class="ti-search" aria-hidden="true"></i>
-                    </a>
-                </li>
+
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -104,84 +100,3 @@
         </div>
     </nav>
 </header>
-
-<!-- ========================================================= 
-MODAL BUSACR PRODUCT
-======================================================== -->
-<div id="buscar-product" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalBuscarProducto" aria-hidden="true" #modalNewUser>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalBuscarProducto">Buscar Producto</h4>
-            </div>
-            <div class="modal-body">
-
-                <div class="my-2">
-                    <input type="text" id="demo-input-search2" placeholder="Buscar Productos" (keyup)="search(buscador.value)" class="form-control m-0" #buscador>
-                    <small *ngIf="resultados > 0" class="text-muted animated fadeIn">Resultados: {{resultados}}</small>
-                </div>
-
-                <div class="table-responsive">
-                    <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
-                        <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Serial</th>
-                                <th>Modelo</th>
-                                <th class="text-center">Cliente</th>
-                                <th>Condiciones</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr *ngIf="products.length == 0">
-                                <td colspan="8">
-                                    <h3 class="mb-0 text-center"> Aun no existen registros de productos... </h3>
-                                </td>
-                            </tr>
-
-                            <tr *ngFor="let product of products">
-
-                                <td>
-                                    <a [routerLink]="['/dashboard/producto', product.pid]">
-                                        {{ product.code }}
-                                    </a>
-                                </td>
-                                <td> {{ product.serial }} </td>
-                                <td> {{ product.model }} </td>
-                                <!-- mdi-account-plus -->
-                                <td class="text-center">
-
-                                    <span *ngIf="product.client?.name" data-toggle="tooltip" [title]="product.client.name">
-                                        {{ product.client?.name }}
-                                    </span>
-
-                                    <span *ngIf="!product.client?.name">
-                                        --
-                                    </span>
-
-                                </td>
-                                <td>
-                                    <small *ngIf="product.estado === 'Instalada' " class="label label-inverse"> {{ product.estado }} </small>
-                                    <small *ngIf="product.estado === 'Disponible' " class="label label-success"> {{ product.estado }} </small>
-                                    <small *ngIf="product.estado === 'Mantenimiento' " class="label label-warning"> {{ product.estado }} </small>
-                                </td>
-                                <td>
-                                    <span *ngIf="product.status" class="label label-success"> Activo </span>
-                                    <span *ngIf="!product.status" class="label label-danger"> Desactivado </span>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>

@@ -3,8 +3,6 @@ import { Component, Input, OnInit } from '@angular/core';
 // SERVICES
 import { UsersService } from '../../../../services/users.service';
 import { ClientsService } from '../../../../services/clients.service';
-import { PreventivesService } from '../../../../services/preventives.service';
-import { CorrectivesService } from '../../../../services/correctives.service';
 import { WorkersService } from '../../../../services/workers.service';
 
 @Component({
@@ -18,9 +16,7 @@ export class CardsComponent implements OnInit {
   @Input('coleccion') coleccion!: string;
 
   constructor(  private workersService: WorkersService,
-                private usersService: UsersService,
-                private preventivesService: PreventivesService,
-                private correctivesService: CorrectivesService) { }
+                private usersService: UsersService) { }
 
   ngOnInit(): void {
     this.colection();    
@@ -52,11 +48,7 @@ export class CardsComponent implements OnInit {
       break;
 
       case 'empresas':
-        this.loadPreventives();
-      break;
-
-      case 'correctivos':
-        this.loadCorrectives();
+        this.loadEmpresas();
       break;
     
       default:
@@ -102,38 +94,25 @@ export class CardsComponent implements OnInit {
   }
 
   /** ======================================================================
-   * LOAD PREVENTIVES
+   * LOAD EMPRESAS
   ====================================================================== */
-  loadPreventives(){
+  loadEmpresas(){
+    this.total = 0;
+    this.color = 'bg-info';
+    this.icon = 'mdi-account-box-outline';
+    this.title = 'Empresas';
+    this.ruta = 'empresas';
+    
+    // this.usersService.loadUsers()
+    //     .subscribe(({total}) => {
 
-    this.preventivesService.loadPreventives(0,5)
-        .subscribe(({total}) => {
+    //       this.total = total;
+    //       this.color = 'bg-info';
+    //       this.icon = 'mdi-account-box-outline';
+    //       this.title = 'Usuarios';
+    //       this.ruta = 'usuarios';
 
-          this.total = total;
-          this.color = 'bg-success';
-          this.icon = 'mdi-alarm-check';
-          this.title = 'Empresas';
-          this.ruta = 'empresas';
-
-        });
-
-  }
-
-  /** ======================================================================
-   * LOAD USERS
-  ====================================================================== */
-  loadCorrectives(){
-
-    this.correctivesService.loadCorrectives(0,5)
-        .subscribe(({total}) => {
-
-          this.total = total;
-          this.color = 'bg-danger';
-          this.icon = 'mdi-alert-outline';
-          this.title = 'Correctivos';
-          this.ruta = 'correctivos';
-
-        });
+    //     });
 
   }
 
