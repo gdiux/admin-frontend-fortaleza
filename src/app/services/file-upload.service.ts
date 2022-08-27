@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-
-import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
+import { environment } from '../../environments/environment';
+
+// MODELS
+import { Worker } from '../models/worker.model';
+
 const base_url = environment.base_url;
+const fortaleza_url = environment.fortaleza_url;
 
 @Injectable({
   providedIn: 'root'
@@ -72,16 +76,39 @@ export class FileUploadService {
   }
 
   /** ================================================================
+   *   UPDATE FILES
+  ==================================================================== */
+  async updateFiles(
+    archivo: File,
+    type: 'img' | 'archivos' ,
+    desc: 'Examen Medico' | 'Cedula Ciudadania' | 'Hoja de vida' | 'Registro Civil' | 'Registro de Matrimonio' | 'EPS' | 'Pensiones' | 'Cesantias' | 'Banco' | 'Caja de Compensacion' | 'RUT' | 'Antecedentes',
+    id: string
+  ){
+      
+      const url = `${fortaleza_url}/uploads/files/${type}/${desc}/${id}`;
+
+      const formData = new FormData();
+      formData.append('image', archivo);
+
+
+      const resp = await fetch(url, {
+        method: 'PUT',
+        headers:{
+          'x-token': localStorage.getItem('token') || ''
+        },
+        body: formData
+      });
+
+      return await resp.json();
+
+  }
+
+  /** ================================================================
    *   DELETE IMAGES
   ==================================================================== */
-  deleteImg(
-    type: 'products' | 'logo' | 'user' | 'preventives' | 'correctives',
-    id: string,
-    desc: 'imgBef' | 'imgAft' | 'video' | 'img' = 'img',
-    img: string
-  ){
+  deleteFile(attachment: string, id: string){
 
-    return this.http.delete(`${base_url}/uploads/delete/${type}/${id}/${desc}/${img}`, this.headers);
+    return this.http.delete<{worker: Worker, ok: boolean}>(`${fortaleza_url}/uploads/delete/${attachment}/${id}`, this.headers);
 
   }
 
