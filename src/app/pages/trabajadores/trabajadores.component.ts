@@ -1,6 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import * as XLSX from 'xlsx';
+
+// MODELS
 import { Worker } from 'src/app/models/worker.model';
+
+// SERVICES
 import { SearchService } from 'src/app/services/search.service';
 import { WorkersService } from 'src/app/services/workers.service';
 
@@ -12,6 +17,9 @@ import Swal from 'sweetalert2';
   styles: [
   ]
 })
+
+
+
 export class TrabajadoresComponent implements OnInit {
 
   constructor(  private workersService: WorkersService,
@@ -111,12 +119,53 @@ export class TrabajadoresComponent implements OnInit {
    *   CHANGE LIMITE
   ==================================================================== */
   limiteChange( cantidad: any ){    
-
+    
     this.limite = Number(cantidad);
     this.loadWorkers();
+    
+  }
+  
+  /** ================================================================
+   *   EXPORTAR EXCEL
+  ==================================================================== */
+  public list: any[] = [];
+  excel(){
+
+    this.list = [];
+
+    this.workersService.excelWorker()
+        .subscribe( ({workers}) => {
+
+          for (const trabajador of workers) {
+
+            this.list.push({
+              nombre: trabajador.name,
+              cedula: trabajador.cedula,
+              email: trabajador.email,
+              telefono: trabajador.phone,
+              ciudad: trabajador.city,
+              direccion: trabajador.address,
+              tipo: trabajador.type
+            })
+            
+          }
+
+          /* generate a worksheet */
+          var ws = XLSX.utils.json_to_sheet(this.list);
+      
+          /* add to workbook */
+          var wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Trabajadores");
+      
+          /* title */
+          let title = 'trabajadores.xls';
+      
+          /* write workbook and force a download */
+          XLSX.writeFile(wb, title);
+
+        });
 
   }
-
 
   // FIN DE LA CLASE
 }

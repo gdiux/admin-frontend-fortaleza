@@ -55,6 +55,13 @@ export class WorkersService {
   }
 
   /** ================================================================
+   *   LOAD WORKER ID
+  ==================================================================== */
+  excelWorker(){
+    return this.http.get<LoadWorkers>(`${base_url}/workers/excel/all`, this.headers);
+  }
+
+  /** ================================================================
    *   UPDATE CLIENTS
   ==================================================================== */
   updateWorker( formData:any, id: string ){

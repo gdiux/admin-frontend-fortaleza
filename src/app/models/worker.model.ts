@@ -24,7 +24,7 @@ export class Worker {
         public wid: string,
         public description: string,
         public attachments: any[],
-        public skills: _skills[]
+        public skills: _skills[],
         
     ){}
 

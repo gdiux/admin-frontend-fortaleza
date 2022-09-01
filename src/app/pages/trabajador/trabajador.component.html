@@ -168,10 +168,17 @@
     <div class="col-lg-4 col-xlg-3 col-md-5">
         <div class="card">
             <div class="card-body little-profile text-center">
-                <div class="pro-img m-t-20"><img [src]="worker.img | imagen:'worker'" alt="user"></div>
+                <div class="pro-img m-t-20">
+                    <a href="https://grupofortalezasas.com/api/uploads/worker/{{worker.img}}" download target="_blank">
+                        <img [src]="worker.img | imagen:'worker'" alt="user">
+                    </a>
+                </div>
                 <h3 class="m-b-0"> {{ worker.name }} </h3>
 
-                <button type="button" class="btn waves-effect waves-light btn-primary btn-sm">Asignar Trabajo</button>
+                <button (click)="asginar(worker.type)" type="button" class="btn waves-effect waves-light btn-primary btn-sm">
+                    <span *ngIf="worker.type === 'Aspirante'">Contratar</span>
+                    <span *ngIf="worker.type === 'Trabajador'">Desvincular</span>
+                </button>
                 <ul class="list-inline soc-pro m-t-30">
                     <li><a href="javascript:void(0)"><i class="fa fa-twitter"></i></a></li>
                     <li><a href="javascript:void(0)"><i class="fa fa-facebook-square"></i></a></li>

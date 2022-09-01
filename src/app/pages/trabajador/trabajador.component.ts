@@ -201,6 +201,24 @@ export class TrabajadorComponent implements OnInit {
 
   };
 
+  /** ================================================================
+   *  ASIGNAR TRABAJO
+  ==================================================================== */
+  asginar(type: string){
+
+    if (type === 'Aspirante') {
+      type = 'Trabajador';
+    }else{
+      type = 'Aspirante';
+    }
+
+    this.workersService.updateWorker({type}, this.worker.wid)
+        .subscribe( ({worker}) => {
+          this.worker.type = worker.type;
+        });
+
+  }
+
   
   // FIN DE LA CLASE
 }
