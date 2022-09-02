@@ -81,7 +81,7 @@ export class FileUploadService {
   async updateFiles(
     archivo: File,
     type: 'img' | 'archivos' ,
-    desc: 'Examen Medico' | 'Cedula Ciudadania' | 'Hoja de vida' | 'Registro Civil' | 'Registro de Matrimonio' | 'EPS' | 'Pensiones' | 'Cesantias' | 'Banco' | 'Caja de Compensacion' | 'RUT' | 'Antecedentes',
+    desc: 'Pruebas Psicotecnicas' |'Examen Medico' | 'Cedula Ciudadania' | 'Hoja de vida' | 'Registro Civil' | 'Registro de Matrimonio' | 'EPS' | 'Pensiones' | 'Cesantias' | 'Banco' | 'Caja de Compensacion' | 'RUT' | 'Antecedentes',
     id: string
   ){
       
