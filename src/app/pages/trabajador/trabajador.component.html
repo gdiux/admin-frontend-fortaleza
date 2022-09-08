@@ -94,10 +94,38 @@
 
                 <!-- BTN ADD FILES MODAL -->
                 <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#subirArchivos">Agregar</button>
-
                 <!-- BTN ADD FILES MODAL -->
 
+
                 <div class="table-responsive m-t-20 no-wrap">
+
+                    <hr>
+                    <div class="d-flex gap-2">
+
+                        <!-- DESCARGAR TODO LOS ARCHIVOS -->
+                        <a href="https://grupofortalezasas.com/api/worker/zip/all/{{worker.wid}}" download target="_blank">
+                            <i class="mdi mdi-arrow-down"></i> <small> Descargar Todos</small>
+                        </a>
+                        <!-- DESCARGAR TODO LOS ARCHIVOS -->
+
+                        <!-- APROBAR - RECHAZAR TODOS -->
+                        <div class="ml-auto">
+                            <button (click)="aprobarAll(true, true)" type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-success" data-toggle="tooltip" data-original-title="Aprobar">
+                                <i class="ti-check" aria-hidden="true"></i>
+                            </button>
+
+                            <button (click)="aprobarAll(false, true)" type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-warning" data-toggle="tooltip" data-original-title="Aprobar">
+                                <i class="ti-alarm-clock" aria-hidden="true"></i>
+                            </button>
+
+                            <button (click)="aprobarAll(true, false)" type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-danger" data-toggle="tooltip" data-original-title="Rechazar">
+                                <i class="ti-na" aria-hidden="true"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+                    <hr>
                     <table class="table vm no-th-brd pro-of-month">
                         <thead>
                             <tr>
@@ -109,6 +137,12 @@
                         <tbody>
 
                             <!-- <a _ngcontent-hbs-c37="" target="_blank" class="btn btn-sm btn-outline-primary border-0" href="https://grupofortalezasas.com/api/uploads/archivos/e01fb37e-7b1c-4a33-99c5-b49f499f4200.docx"><i _ngcontent-hbs-c37="" class="bi bi-arrow-90deg-right"></i></a> -->
+
+                            <tr *ngIf="worker.attachments.length === 0">
+                                <td colspan="4">
+                                    <h4 class="mb-0 text-center"> No se han cargado ningun documento </h4>
+                                </td>
+                            </tr>
 
                             <tr *ngFor="let file of worker.attachments">
 
@@ -181,6 +215,7 @@
                     </a>
                 </div>
                 <h3 class="m-b-0"> {{ worker.name }} </h3>
+                <p class="mb-3 text-muted"> CC: {{worker.cedula || '--------'}} </p>
 
                 <button (click)="asginar(worker.type)" type="button" class="btn waves-effect waves-light btn-primary btn-sm">
                     <span *ngIf="worker.type === 'Aspirante'">Contratar</span>

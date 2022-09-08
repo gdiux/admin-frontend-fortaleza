@@ -49,6 +49,45 @@ export class TrabajadorComponent implements OnInit {
   /** ================================================================
    *  APROBAR ARCHIVOS
   ==================================================================== */
+  aprobarAll( approved: boolean, status: boolean ){
+
+    Swal.fire({
+      title: 'Atención?',
+      text: "Estas seguro de cambiar el estado de todos los archivos!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, cambiar!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        // CAMBIAR ESTADO
+        this.worker.attachments.map( (file) => {          
+          file.approved = approved;
+          file.status = status;        
+        });
+
+        this.workersService.updateWorker( {attachments: this.worker.attachments}, this.worker.wid )
+            .subscribe( ({worker}) => {
+
+              this.worker.attachments = worker.attachments;
+              Swal.fire('Estupendo', 'Se ha cambiado el estado de todos los archivos exitosamente!', 'success');              
+
+            }, (err) => {
+              console.log(err);
+              Swal.fire('Error', err.error.msg, 'error');              
+            });
+
+      }
+    })
+
+  };
+
+  /** ================================================================
+   *  APROBAR ARCHIVOS
+  ==================================================================== */
   aprobarArchivo( id: string, approved: boolean, status: boolean ){
 
     Swal.fire({
