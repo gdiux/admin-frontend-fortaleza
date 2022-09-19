@@ -166,9 +166,7 @@ export class EmpresaComponent implements OnInit {
     this.workers = [];
     this.resultadoW = 0;
 
-    this.jobSelect.worker = worker;    
-
-    console.log(this.jobSelect.worker);
+    this.jobSelect.worker = worker; 
     
 
   }

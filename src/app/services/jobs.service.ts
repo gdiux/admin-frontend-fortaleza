@@ -40,6 +40,13 @@ export class JobsService {
   }
 
   /** ================================================================
+   *   LOAD JOBS STATUS
+  ==================================================================== */
+  loadJobsStatus(query: string){
+    return this.http.get<LoadJobs>(`${base_url}/jobs/query${query}`, this.headers);
+  }
+
+  /** ================================================================
    *   POST JOB
   ==================================================================== */
   loadJobsBussiness(bussiness: string){

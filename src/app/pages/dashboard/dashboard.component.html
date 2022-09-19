@@ -30,19 +30,205 @@
         <div class="d-flex">
             <h4 class="card-title"><span class="lstick bg-warning"></span> Ofertas laborales sin asignar </h4>
             <div class="ml-auto">
-                <span class="badge badge-warning fs-5"> {{ 0 | number }} </span>
+                <span class="badge badge-warning fs-5"> {{ jobsPendiente.length | number }} </span>
             </div>
         </div>
     </div>
     <div class="activity-box">
         <div class="card-body">
-            <!-- Activity item-->
-            <div class="text-center">
 
-                <h3 class="mb-0 text-muted tex-break text-center"> No existen registros... </h3>
+            <div class="table-responsive m-t-20 no-wrap">
 
+                <hr>
+                <table class="table vm no-th-brd pro-of-month">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Empresa</th>
+                            <th colspan="2">Descripción</th>
+                            <th>Pago</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- <a _ngcontent-hbs-c37="" target="_blank" class="btn btn-sm btn-outline-primary border-0" href="https://grupofortalezasas.com/api/uploads/archivos/e01fb37e-7b1c-4a33-99c5-b49f499f4200.docx"><i _ngcontent-hbs-c37="" class="bi bi-arrow-90deg-right"></i></a> -->
+
+                        <tr *ngIf="jobsPendiente.length === 0">
+                            <td colspan="6">
+                                <h4 class="mb-0 text-center"> No se ha creado ninguna oferta de empleo </h4>
+                            </td>
+                        </tr>
+
+                        <tr *ngFor="let job of jobsPendiente">
+
+                            <td>{{job.control}}</td>
+
+                            <td style="width:50px;">
+                                <a [routerLink]="['/dashboard/empresa', job.bussiness._id]" el="noopener noreferrer">
+
+                                    {{ job.bussiness.name }} 
+                                </a>
+                            </td>
+
+                            <td colspan="2">
+                                <p class="text-break text-truncate" style="width:18rem;">
+                                    <span class="text-primary">
+                                        {{ job.name }}
+                                    </span>
+                                    <br> {{ job.description }}
+                                    <br>
+                                    <small class="text-muted">fecha: {{ job.fecha | date:'short' }}</small>
+                                </p>
+                            </td>
+
+                            <td> {{ job.sueldo | currency: 'COP' }} </td>
+
+                            <td>
+                                <span *ngIf="job.type === 'Pendiente'" class="label label-warning label-rounded">Pendiente</span>
+                                <span *ngIf="job.type === 'Aprobado'" class="label label-success label-rounded">Aprobado</span>
+                            </td>
+
+                            <td>
+                                <button type="button" (click)="selectJob(job)" data-toggle="modal" data-target="#editJob" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-primary">
+                                    <i class="ti-pencil" aria-hidden="true"></i>
+                                </button>
+
+                                <button type="button" (click)="deleteJob(job.jid)" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-danger" data-toggle="tooltip" data-original-title="Eliminar">
+                                    <i class="ti-trash" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
             </div>
-            <!-- Activity item-->
+
         </div>
     </div>
 </div>
+
+<!-- MODAL EDITAR TRABAJO -->
+<div class="modal fade" id="editJob" tabindex="-1" aria-labelledby="editJobLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div *ngIf="loading" class="spinner-grow text-primary me-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5 class="modal-title" id="editJobLabel">Información de la oferta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                <div *ngIf="jobSelect && !loading">
+
+                    <div class="container">
+
+                        <div class="d-flex flex-row comment-row mb-4">
+
+                            <div class="comment-text w-100">
+                                <h4 class="mb-2 text-center text-primary fw-bold"> {{ jobSelect.name }} </h4>
+                                <h5 class="">Pago: {{ jobSelect.sueldo | currency:'COP' }} </h5>
+                                <p class="m-b-5"> {{ jobSelect.description }} </p>
+                                <div class="comment-footer">
+                                    <span class="text-muted pull-right"> {{ jobSelect.fecha | date: 'short' }} </span>
+                                    <span *ngIf="jobSelect.type === 'Pendiente'" class="label label-warning label-rounded">Pendiente</span>
+                                    <span *ngIf="jobSelect.type === 'Aprobado'" class="label label-success label-rounded">Aprobado</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- ASIGNAR TRABAJADOR -->
+                        <div class="my-2">
+
+                            <h5> Asignar Trabajador </h5>
+
+                            <input type="text" autocomplete="off" id="demo-input-search3" placeholder="Buscar Trabajador" (keyup)="searchTrabajador(buscadorW.value)" class="form-control m-0" #buscadorW>
+                            <small *ngIf="resultadoW > 0" class="text-muted animated fadeIn">Resultados: {{resultadoW}}</small>
+                            <small *ngIf="sinResultadoW" class="text-muted animated fadeIn">Sin resultados...</small>
+
+                            <div *ngIf="workers.length > 0" class="list-group list-group-flush" style="max-height:400px; overflow-y: scroll; z-index: 500; position: fixed;">
+
+                                <ng-container *ngFor="let worker of workers">
+                                    <button type="button" (click)="asignarWorker(worker)" class="list-group-item list-group-item-action pointer animated fadeIn">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1 text-break fw-bolder">{{ worker.name }}</h5>
+                                            <small> 
+                                                <span *ngIf="worker.status" class="label label-success"> Activo </span>
+                                                <span *ngIf="!worker.status" class="label label-danger"> Desactivado </span>
+                                            </small>
+                                        </div>
+                                        <p class="mb-1" *ngIf="worker.phone" > <i class="mdi mdi-cellphone-iphone"></i> {{ worker.phone }} </p>
+                                        <small *ngIf="worker.address" class="text-break"> 
+                                            <span *ngIf="worker.city" > <i class="mdi mdi-map-marker"></i> {{ worker.city }} - </span> {{ worker.address }} 
+                                        </small>                          
+                                        
+                                    </button>
+                                </ng-container>
+
+                            </div>
+
+                            <div *ngIf="jobSelect.worker" class="card card-body">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-3 text-center">
+                                        <img [src]="jobSelect.worker.img | imagen:'worker'" class="img-circle img-responsive">
+                                    </div>
+                                    <div class="col-md-8 col-lg-9">
+                                        <h3 class="box-title m-b-0"> {{ jobSelect.worker.name }} </h3>
+                                        <div class="d-flex gap-2">
+                                            <small class="label label-info label-rounded" *ngFor="let skill of jobSelect.worker.skills">
+                                                {{ skill.name }} 
+                                            </small>
+                                        </div>
+                                        <address>
+                                            {{ jobSelect.worker.address }}
+                                            <br>
+                                            <abbr title="Telefono">Telefono:</abbr> {{ jobSelect.worker.phone }}
+                                        </address>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+
+                        <!-- ASSIGNAR FECHA DE INICIO -->
+                        <div class="mb-2">
+
+                            <h5> fecha de inicio </h5>
+
+                            <input class="form-control" type="date" placeholder="Fecha de inicio" #dateIn>
+
+                        </div>
+
+                    </div>
+
+
+                    <button [disabled]="loading" (click)="asignarFechaWorker(dateIn.value)" type="button" name="" id="" class="btn btn-primary btn-sm">
+                        <span *ngIf="!loading">                            
+                            Guardar
+                        </span>
+                        <span *ngIf="loading">                            
+                            Guardando...
+                        </span>
+                    </button>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-secondary ms-auto" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL EDITAR TRABAJO -->

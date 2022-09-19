@@ -15,7 +15,8 @@ export class Job {
         public fechain: Date,
         public fechaout: Date,
         public fecha: Date,
-        public jid: string
+        public jid: string,
+        
     ){}
 
 }

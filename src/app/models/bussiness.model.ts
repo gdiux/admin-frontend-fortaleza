@@ -17,6 +17,7 @@ export class Bussiness {
         public description: string,
         public confirm: boolean,
         public bid: string,
+        public _id: string,
         public bussiness?: boolean,
         public fecha?: Date,
         
