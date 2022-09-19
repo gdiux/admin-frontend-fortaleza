@@ -22,6 +22,8 @@ import { PipesModule } from '../pipes/pipes.module';
 import { CardsComponent } from './dashboard/components/cards/cards.component';
 import { TrabajadoresComponent } from './trabajadores/trabajadores.component';
 import { TrabajadorComponent } from './trabajador/trabajador.component';
+import { EmpresasComponent } from './empresas/empresas.component';
+import { EmpresaComponent } from './empresa/empresa.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { TrabajadorComponent } from './trabajador/trabajador.component';
     PerfilComponent,
     CardsComponent,
     TrabajadoresComponent,
-    TrabajadorComponent
+    TrabajadorComponent,
+    EmpresasComponent,
+    EmpresaComponent
   ],
   exports:[
     DashboardComponent,

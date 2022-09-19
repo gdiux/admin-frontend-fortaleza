@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 
 // SERVICES
 import { UsersService } from '../../../../services/users.service';
-import { ClientsService } from '../../../../services/clients.service';
 import { WorkersService } from '../../../../services/workers.service';
+import { BussinessService } from '../../../../services/bussiness.service';
 
 @Component({
   selector: 'app-cards',
@@ -16,7 +16,8 @@ export class CardsComponent implements OnInit {
   @Input('coleccion') coleccion!: string;
 
   constructor(  private workersService: WorkersService,
-                private usersService: UsersService) { }
+                private usersService: UsersService,
+                private bussinessService: BussinessService) { }
 
   ngOnInit(): void {
     this.colection();    
@@ -103,16 +104,16 @@ export class CardsComponent implements OnInit {
     this.title = 'Empresas';
     this.ruta = 'empresas';
     
-    // this.usersService.loadUsers()
-    //     .subscribe(({total}) => {
+    this.bussinessService.loadBussiness(0,100000)
+        .subscribe(({total}) => {
 
-    //       this.total = total;
-    //       this.color = 'bg-info';
-    //       this.icon = 'mdi-account-box-outline';
-    //       this.title = 'Usuarios';
-    //       this.ruta = 'usuarios';
+          this.total = total;
+          this.color = 'bg-success';
+          this.icon = 'mdi-city';
+          this.title = 'Empresas';
+          this.ruta = 'empresas';
 
-    //     });
+        });
 
   }
 

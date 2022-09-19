@@ -8,6 +8,7 @@ registerLocaleData(localEs, 'es-CO');
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
 
 // MODULES
 import { AuthModule } from './auth/auth.module';
@@ -23,7 +24,8 @@ import { PipesModule } from './pipes/pipes.module';
     AppRoutingModule,
     PagesModule,
     AuthModule,
-    PipesModule
+    PipesModule,
+    RouterModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-CO' }],
   bootstrap: [AppComponent]
