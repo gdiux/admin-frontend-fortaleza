@@ -188,7 +188,8 @@ export class EmpresaComponent implements OnInit {
 
     let data = {
       fechain,
-      worker: this.jobSelect.worker.wid
+      worker: this.jobSelect.worker.wid,
+      type: 'Aprobado'
     }
 
     this.jobsService.updateJob(data, this.jobSelect.jid )
