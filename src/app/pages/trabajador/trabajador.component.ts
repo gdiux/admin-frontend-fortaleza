@@ -2,12 +2,17 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 // MODELS
 import { Worker } from 'src/app/models/worker.model';
 
 // SERVICES
 import { WorkersService } from '../../services/workers.service';
 import { FileUploadService } from 'src/app/services/file-upload.service';
+import { JobsService } from 'src/app/services/jobs.service';
+import { Job } from 'src/app/models/jobs.model';
 
 @Component({
   selector: 'app-trabajador',
@@ -19,7 +24,11 @@ export class TrabajadorComponent implements OnInit {
 
   constructor(  private activatedRoute: ActivatedRoute,
                 private workersService: WorkersService,
-                private fileUploadService: FileUploadService) { }
+                private fileUploadService: FileUploadService,
+                private jobsService: JobsService) { }
+
+
+  public dateActual: Date = new Date();
 
   ngOnInit(): void {
 
@@ -42,6 +51,9 @@ export class TrabajadorComponent implements OnInit {
     this.workersService.loadWorkerId(id)
         .subscribe( ({worker}) => {
           this.worker = worker;
+
+          this.cargarJobs();
+
         });
 
   }
@@ -256,6 +268,59 @@ export class TrabajadorComponent implements OnInit {
           this.worker.type = worker.type;
         });
 
+  }
+
+  /** ================================================================
+   *  CARGAR TRABAJOS ASIGNADOS
+  ==================================================================== */
+  public jobs: Job[] = [];
+  cargarJobs(){
+
+    this.jobsService.loadJobsWorker( this.worker.wid )
+        .subscribe( ({ jobs }) => {
+          
+          this.jobs = jobs;
+
+        });
+  }
+
+  /** ================================================================
+   *  SELECCIONAR TRABAJO
+  ==================================================================== */
+  public jobSelect!: Job;
+
+  selectJob(job: Job){
+
+    this.jobSelect = job;
+
+  }
+
+  /** ================================================================
+   *   PDF
+  ==================================================================== */
+  downloadPDF() {
+    // Extraemos el
+    const DATA = document.getElementById('pdf') as HTMLElement;
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const options = {
+      background: 'white',
+      scale: 3
+    };
+    html2canvas( DATA , options).then((canvas) => {
+
+      const img = canvas.toDataURL('image/PNG');
+
+      // Add image Canvas to PDF
+      const bufferX = 15;
+      const bufferY = 15;
+      const imgProps = (doc as any).getImageProperties(img);
+      const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
+      return doc;
+    }).then((docResult) => {
+      docResult.save(`${new Date().toISOString()}.pdf`);
+    });
   }
 
   

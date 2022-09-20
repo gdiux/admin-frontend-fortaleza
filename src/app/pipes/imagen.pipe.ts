@@ -10,11 +10,11 @@ const fortaleza_url = environment.fortaleza_url;
 })
 export class ImagenPipe implements PipeTransform {
 
-  transform(img: string, tipo: 'worker' | 'user' | 'archivos' ): string {
+  transform(img: string, tipo: 'worker' | 'user' | 'archivos'  | 'bussiness' ): string {
 
     if (img) {
       
-        if (tipo === 'worker') {
+        if (tipo === 'worker' || tipo === 'bussiness') {
           return `${fortaleza_url}/uploads/${tipo}/${img}`;          
         }else if (tipo === 'archivos'){
           return `${fortaleza_url}/uploads/${tipo}/${img}`;
@@ -25,7 +25,7 @@ export class ImagenPipe implements PipeTransform {
 
     }else{
         
-        if (tipo === 'worker') {          
+        if (tipo === 'worker' || tipo === 'bussiness') {          
           return `${fortaleza_url}/uploads/${tipo}/${img}`;          
         }else{
           return `${base_url}/uploads/${tipo}/no-image`;

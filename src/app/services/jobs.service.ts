@@ -47,10 +47,17 @@ export class JobsService {
   }
 
   /** ================================================================
-   *   POST JOB
+   *   LOAD JOBS BUSSINESS
   ==================================================================== */
   loadJobsBussiness(bussiness: string){
     return this.http.get<LoadJobs>(`${base_url}/jobs/all/${bussiness}`, this.headers);
+  }
+
+  /** ================================================================
+   *   LOAD JOBS WORKER
+  ==================================================================== */
+  loadJobsWorker(worker: string){
+    return this.http.get<LoadJobs>(`${base_url}/jobs/worker/${worker}`, this.headers);
   }
 
   /** ================================================================

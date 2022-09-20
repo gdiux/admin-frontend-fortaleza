@@ -201,6 +201,77 @@
             </div>
         </div>
 
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Trabajos asignados</h4>
+                    </div>
+                    <div class="ml-auto">
+                        <!-- <select class="custom-select b-0">
+                                <option selected="">January 2017</option>
+                                <option value="1">February 2017</option>
+                                <option value="2">March 2017</option>
+                                <option value="3">April 2017</option>
+                            </select> -->
+                    </div>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <table class="table vm no-th-brd no-wrap pro-of-month">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Empresa</th>
+                                <th>Trabajo</th>
+                                <th>Pago</th>
+                                <th>Fecha de inicio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngIf="jobs.length === 0">
+                                <td colspan="5">
+                                    <h4>No se ha asignado ningun trabajo...</h4>
+                                </td>
+                            </tr>
+
+                            <tr *ngFor="let job of jobs">
+
+                                <td style="width:50px;">
+                                    <span class="round">
+                                        <img [src]="job.bussiness.img | imagen:'bussiness'" alt="user" width="50">
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <h6> {{ job.bussiness.name }} </h6>
+                                </td>
+                                <td style="max-width:250px;">
+                                    <h6> {{ job.name }} </h6>
+                                    <p class="mb-0 text-truncate" style="max-width:250px;">
+
+                                        <small class="text-muted "> {{ job.description }} </small>
+                                    </p>
+                                </td>
+
+                                <td> {{ job.sueldo }} </td>
+
+                                <td><span class="label label-success label-rounded"> {{ job.fechain | date:'short' }} </span></td>
+                                <td>
+                                    <!-- selectJob -->
+                                    <button (click)="selectJob(job)" data-toggle="modal" data-target="#selectJob" type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-success">
+                                        <i class="ti-eye" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- INFORMACION -->
@@ -333,3 +404,46 @@
     </div>
 </div>
 <!-- MODAL SUBIR ARCHIVOS -->
+
+<!-- MODAL SELECCIONAR TRABAJO -->
+<div class="modal fade" id="selectJob" tabindex="-1" aria-labelledby="selectJobLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div *ngIf="loading" class="spinner-grow text-primary me-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5 class="modal-title" id="selectJobLabel">Informacion del trabajo</h5>
+                <button (click)="downloadPDF()" type="button" class="btn btn-danger btn-sm">PDF</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                <div *ngIf="jobSelect" class="card card-body" id="pdf">
+
+                    <div class="d-flex">
+                        <div class="col-md-8 col-lg-9">
+                            <h3 class="box-title m-b-0 font-weight-bold"> {{ worker.name }} </h3>
+                            <p class="mb-2">CC: {{ worker.cedula }} </p>
+
+                            <small class="mt-4 text-muted">empresa:</small>
+                            <h3 class="mb-0 font-weight-bold"> {{ jobSelect.bussiness.name }} </h3>
+                            <h4 class="mb-1"> {{ jobSelect.name }} </h4>
+                            <p class="mb-0">Inicio: {{ jobSelect.fechain | date:'MMM d, y, h:mm:ss a' }} </p>
+                            <p class="mb-1">Sueldo: {{ jobSelect.sueldo | currency:'COP' }} </p>
+                            <small class="mb-0 mt-4">Solicitud: {{ dateActual | date:'MMM d, y, h:mm:ss a' }} </small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-secondary ms-auto" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL SELECCIONAR TRABAJO -->

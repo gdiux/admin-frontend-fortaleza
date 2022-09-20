@@ -12,7 +12,7 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://localhost:4000/api',
+  base_url: 'https://admin.grupofortalezasas.com/api',
   fortaleza_url: 'https://grupofortalezasas.com/api'
 };
 
