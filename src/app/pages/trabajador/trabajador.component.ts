@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 import jsPDF from 'jspdf';
@@ -7,12 +8,14 @@ import html2canvas from 'html2canvas';
 
 // MODELS
 import { Worker } from 'src/app/models/worker.model';
+import { Job } from 'src/app/models/jobs.model';
+import { Entrevista } from 'src/app/models/entrevista.model';
 
 // SERVICES
 import { WorkersService } from '../../services/workers.service';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { JobsService } from 'src/app/services/jobs.service';
-import { Job } from 'src/app/models/jobs.model';
+import { EntrevistasService } from '../../services/entrevistas.service';
 
 @Component({
   selector: 'app-trabajador',
@@ -25,7 +28,9 @@ export class TrabajadorComponent implements OnInit {
   constructor(  private activatedRoute: ActivatedRoute,
                 private workersService: WorkersService,
                 private fileUploadService: FileUploadService,
-                private jobsService: JobsService) { }
+                private jobsService: JobsService,
+                private entrevistasService: EntrevistasService,
+                private fb: FormBuilder) { }
 
 
   public dateActual: Date = new Date();
@@ -34,9 +39,7 @@ export class TrabajadorComponent implements OnInit {
 
     this.activatedRoute.params
         .subscribe( ({id}) => {
-          
-          this.loadWorker(id);
-          
+          this.loadWorker(id);          
         });
 
   }
@@ -53,6 +56,7 @@ export class TrabajadorComponent implements OnInit {
           this.worker = worker;
 
           this.cargarJobs();
+          this.cargarEntrevistas();
 
         });
 
@@ -296,9 +300,150 @@ export class TrabajadorComponent implements OnInit {
   }
 
   /** ================================================================
+   *  ======================================================================================
+   * ======================================================================================
+   * ======================================================================================
+   * ======================================================================================
+   * ======================================================================================
+   *   ENTREVISTAS
+  ==================================================================== */
+  public entrevistas: Entrevista[] = [];
+
+  cargarEntrevistas(){
+
+    this.entrevistasService.loadEntrevistasWorker(this.worker.wid)
+        .subscribe( ({entrevistas}) => {
+
+          this.entrevistas = entrevistas;
+          console.log(entrevistas);
+          
+        });
+
+  }
+
+
+  /** ================================================================
+   *   CREAR ENTREVISTA
+  ==================================================================== */
+  public entrevistaFormSubmitted: boolean = false;
+  public entrevistaForm = this.fb.group({
+    enlace: ['', [Validators.required]],
+    day: ['', Validators.required],
+    worker: '',
+    trabajador: '',
+    email: '',
+  })
+
+  createEntrevista(){
+
+    this.entrevistaForm.value.worker = this.worker.wid!;
+    this.entrevistaForm.value.trabajador = this.worker.name;
+    this.entrevistaForm.value.email = this.worker.email;
+
+    this.entrevistaFormSubmitted = true;
+
+    if (this.entrevistaForm.invalid) {
+      return;
+    }
+
+    this.entrevistasService.createEntrevista(this.entrevistaForm.value)
+        .subscribe( ({entrevista}) => {
+
+          this.entrevistaForm.setValue({
+            enlace: '',
+            day: '',
+            worker: this.worker.wid,
+            trabajador: this.worker.name,
+            email: this.worker.email,
+          });
+
+          this.entrevistaFormSubmitted = false;
+
+          this.entrevistas.push(entrevista);
+          Swal.fire('Estupendo', 'Se ha creado la entrevista exitosamente!', 'success');
+          
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        });
+    
+
+  }
+
+  /** ======================================================================
+   * VALIDATE FORM
+  ====================================================================== */
+  validate( campo: string): boolean{
+    
+    if ( this.entrevistaForm.get(campo)?.invalid && this.entrevistaFormSubmitted ) {      
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
+  /** ================================================================
+   *   COMPLETAR ENTREVISTA ENTREVISTA
+  ==================================================================== */
+  completarEntrevista(status: boolean, id: string){
+
+    this.entrevistasService.updateEntrevista({status, confirm: status}, id)
+        .subscribe( ({entrevista}) => {
+
+          this.cargarEntrevistas();
+          Swal.fire('Estupendo', 'Se ha actualizado exitosamente la entrevista', 'success');          
+          
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+          
+        })
+
+  }
+
+  /** ================================================================
+   *   ELIMINAR ENTREVISTA
+  ==================================================================== */
+  deleteEntrevista(id: string){
+
+    Swal.fire({
+      title: 'Atención?',
+      text: "Estas seguro de eliminar esta entrevista!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this.entrevistasService.deleteEntrevista(id)
+        .subscribe( resp => {
+
+          this.cargarEntrevistas();
+          Swal.fire('Estupendo', 'Se ha eliminado exitosamente la entrevista', 'success');          
+          
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+          
+        });
+
+      }
+    })
+
+    
+
+  }
+
+  /** ================================================================
    *   PDF
   ==================================================================== */
   downloadPDF() {
+    
     // Extraemos el
     const DATA = document.getElementById('pdf') as HTMLElement;
     const doc = new jsPDF('p', 'pt', 'a4');

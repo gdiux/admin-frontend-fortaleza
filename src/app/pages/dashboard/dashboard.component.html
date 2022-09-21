@@ -22,7 +22,7 @@
 
 
 <!-- ============================================================== -->
-<!-- PROXIMOS PREVENTIVOS -->
+<!-- TRABAJOS PENDIENTES SIN ASIGNAR -->
 <!-- ============================================================== -->
 
 <div *ngIf="user.role === 'ADMIN'" class="card">
@@ -102,6 +102,67 @@
                         </tr>
 
 
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- ENTREVISTAS PENDIENTES -->
+<!-- ============================================================== -->
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex">
+            <h4 class="card-title"><span class="lstick bg-primary"></span> Entrevistas Pendientes </h4>
+            <div class="ml-auto">
+                <span class="badge badge-primary fs-5"> {{ entrevistas.length | number }} </span>
+            </div>
+        </div>
+    </div>
+    <div class="activity-box">
+        <div class="card-body">
+
+            <div class="table-responsive m-t-20">
+                <table class="table vm no-th-brd no-wrap pro-of-month">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Colaborador</th>
+                            <th>enlace</th>
+                            <th>fecha</th>
+                            <th>Confirmada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr *ngIf="entrevistas.length === 0">
+                            <td colspan="6">
+                                <h4 class="mb-0 text-center"> No existen entrevistas pendientes... </h4>
+                            </td>
+                        </tr>
+
+                        <tr *ngFor="let item of entrevistas">
+                            <td style="width:50px;">
+                                <a class="text-primary" href="http://localhost:4200/dashboard/trabajador/{{item.worker._id}}" target="_blank">
+                                    <span class="round">
+                                        <img [src]="item.worker.img | imagen:'worker'" alt="user" width="50">
+                                    </span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="http://localhost:4200/dashboard/trabajador/{{item.worker._id}}" target="_blank">
+                                    <h6 class="text-primary"> {{ item.worker.name }} </h6>
+                                </a>
+                            </td>
+                            <td> <a [href]="item.enlace" target="_blank"> {{ item.enlace }} </a> </td>
+                            <td> {{ item.day | date:'d, MMM,y, h:mm:ss' }} </td>
+                            <td>
+                                <span *ngIf="!item.confirm" class="label label-warning label-rounded">Pendiente</span>
+                                <span *ngIf="item.confirm" class="label label-success label-rounded">Confirmada</span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

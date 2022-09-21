@@ -255,13 +255,13 @@
                                     </p>
                                 </td>
 
-                                <td> {{ job.sueldo }} </td>
+                                <td> {{ job.sueldo | currency:'COP' }} </td>
 
                                 <td><span class="label label-success label-rounded"> {{ job.fechain | date:'short' }} </span></td>
                                 <td>
                                     <!-- selectJob -->
                                     <button (click)="selectJob(job)" data-toggle="modal" data-target="#selectJob" type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-success">
-                                        <i class="ti-eye" aria-hidden="true"></i>
+                                        <i class="ti-medall" aria-hidden="true"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -299,6 +299,68 @@
                 </ul>
             </div>
 
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title">
+                            <span class="lstick">
+
+                            </span>Entrevistas</h4>
+                    </div>
+
+                    <div class="ml-auto">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#newEntrevista"> Crear </button>
+                    </div>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <table class="table vm no-th-brd no-wrap pro-of-month">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha</th>
+                                <th>Confirmada</th>
+                                <th>Estatus</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngIf="entrevistas.length === 0">
+                                <td colspan="5">
+                                    <p class="mb-0 text-center">No se a creado ninguna entrevista...</p>
+                                </td>
+                            </tr>
+
+                            <tr *ngFor="let item of entrevistas">
+                                <td> {{ item.control }} </td>
+                                <td> {{ item.day | date:'M/d/yy, h:mm a' }} </td>
+                                <td>
+                                    <span *ngIf="!item.confirm" class="label label-warning label-rounded">Pediente</span>
+                                    <span *ngIf="item.confirm" class="label label-success label-rounded">Confirmada</span>
+                                </td>
+                                <td>
+                                    <span *ngIf="!item.status" class="label label-warning label-rounded">Pendiente</span>
+                                    <span *ngIf="item.status" class="label label-success label-rounded">Completada</span>
+                                </td>
+                                <td>
+                                    <a [href]="item.enlace" target="_blank" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-primary" data-toggle="tooltip" data-original-title="Aprobar">
+                                        <i class="ti-link" aria-hidden="true"></i>
+                                    </a>
+                                    <button (click)="completarEntrevista(true, item.eid)" type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-success" data-toggle="tooltip" data-original-title="Aprobar">
+                                        <i class="ti-check" aria-hidden="true"></i>
+                                    </button>
+                                    <button (click)="deleteEntrevista(item.eid)" type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-danger" data-toggle="tooltip" data-original-title="Rechazar">
+                                        <i class="ti-trash" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <div class="card mt-4">
@@ -407,13 +469,13 @@
 
 <!-- MODAL SELECCIONAR TRABAJO -->
 <div class="modal fade" id="selectJob" tabindex="-1" aria-labelledby="selectJobLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <div *ngIf="loading" class="spinner-grow text-primary me-2" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <h5 class="modal-title" id="selectJobLabel">Informacion del trabajo</h5>
+                <h5 class="modal-title" id="selectJobLabel">Certificado Laboral</h5>
                 <button (click)="downloadPDF()" type="button" class="btn btn-danger btn-sm">PDF</button>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
@@ -421,18 +483,53 @@
 
                 <div *ngIf="jobSelect" class="card card-body" id="pdf">
 
-                    <div class="d-flex">
-                        <div class="col-md-8 col-lg-9">
-                            <h3 class="box-title m-b-0 font-weight-bold"> {{ worker.name }} </h3>
-                            <p class="mb-2">CC: {{ worker.cedula }} </p>
 
-                            <small class="mt-4 text-muted">empresa:</small>
-                            <h3 class="mb-0 font-weight-bold"> {{ jobSelect.bussiness.name }} </h3>
-                            <h4 class="mb-1"> {{ jobSelect.name }} </h4>
-                            <p class="mb-0">Inicio: {{ jobSelect.fechain | date:'MMM d, y, h:mm:ss a' }} </p>
-                            <p class="mb-1">Sueldo: {{ jobSelect.sueldo | currency:'COP' }} </p>
-                            <small class="mb-0 mt-4">Solicitud: {{ dateActual | date:'MMM d, y, h:mm:ss a' }} </small>
+                    <div class="container-fluid py-5">
+
+                        <div class="d-flex justify-content-center mb-4">
+                            <img src="../../../assets/images/logo/logo.webp" style="max-width: 200px;" alt="">
                         </div>
+
+                        <h3 class="box-title mb-0 text-center font-weight-bold"> FORTALEZA TEMP JOB PLUS EST S.A.S</h3>
+                        <h4 class="box-title mb-4 text-center font-weight-bold"> NIT. 901.601.054-5</h4>
+
+                        <p class="text-center mx-auto">Certifica que:</p>
+
+                        <br>
+                        <p class="text-justify ">
+                            El colaborador (a) <span class="font-weight-bold">{{ worker.name }}</span>, con Cédula de Ciudadanía número <span class="font-weight-bold">{{ worker.cedula | number }}</span>, labora al servicio de esta compañía desde el {{
+                            jobSelect.fechain | date:'d/M/yy' }} a la fecha, mediante un contrato de Obra o Labor Contratada desempeñando el cargo de <span class="font-weight-bold"> {{ jobSelect.name
+                            }} </span> en la empresa usuaria <span class="font-weight-bold">{{ jobSelect.bussiness.name }}</span>.
+                        </p>
+                        <br>
+
+                        <p class="text-justify">La presente se expide en la ciudad de Bucaramanga a solicitud del trabajador {{ worker.name }} dirigida a QUIEN INTERESE, con fecha {{ dateActual | date:'d, MMMM, y' }} </p>
+
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <p>Atentamente,</p>
+                        <br>
+                        <br>
+                        <br>
+
+                        <div>
+                            <div>
+                                <div style="max-width: 200px; border-bottom: 2px solid #dcdcdc;">
+                                    <img src="../../../assets/images/logo/firma.jpg" style="max-width: 150px; margin: auto;" alt="">
+                                </div>
+                                <div>
+                                    <p class="mb-0">YURY MARCELA ESCALANTE</p>
+                                    <p class="mb-0">Coordinadora de Gestión Humana</p>
+                                    <p class="mb-0">Tel. 3245173063</p>
+                                    <p class="mb-0">gestion.humana@fortalezasas.com</p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
@@ -447,3 +544,47 @@
     </div>
 </div>
 <!-- MODAL SELECCIONAR TRABAJO -->
+
+<!-- MODAL CREAR ENTREVISTA -->
+<div class="modal fade" id="newEntrevista" tabindex="-1" aria-labelledby="newEntrevistaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newEntrevistaLabel">Crear Entrevista</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal form-material" autocomplete="off" [formGroup]="entrevistaForm" (ngSubmit)="createEntrevista()">
+
+                    <div class="form-group has-danger">
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="enlace" type="text" class="form-control" placeholder="Enlace de la entrevista">
+                            <div *ngIf="validate('enlace')" class="form-control-feedback">
+                                <small> El enlace es obligatorio </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="day" type="datetime-local" class="form-control" placeholder="Fecha de la entrevista">
+                            <div *ngIf="validate('day')" class="form-control-feedback">
+                                <small> La fecha es obligatoria</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-info waves-effect btn-block">Crear</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-secondary ms-auto" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL CREAR ENTREVISTA -->

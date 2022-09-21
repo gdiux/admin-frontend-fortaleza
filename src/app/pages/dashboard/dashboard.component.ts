@@ -1,21 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 
 // MODELS
-import { Product } from 'src/app/models/products.model';
 import { User } from '../../models/users.model';
+import { Job } from 'src/app/models/jobs.model';
+import { Worker } from 'src/app/models/worker.model';
+import { Entrevista } from 'src/app/models/entrevista.model';
 
 // SERVICES
-import { ProductsService } from '../../services/products.service';
 import { UsersService } from '../../services/users.service';
-import { Corrective } from 'src/app/models/correctives.model';
-import { Preventive } from '../../models/preventives.model';
-import { PreventivesService } from '../../services/preventives.service';
-import { CorrectivesService } from '../../services/correctives.service';
 import { JobsService } from '../../services/jobs.service';
-import { Job } from 'src/app/models/jobs.model';
-import Swal from 'sweetalert2';
 import { SearchService } from 'src/app/services/search.service';
-import { Worker } from 'src/app/models/worker.model';
+import { EntrevistasService } from '../../services/entrevistas.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +25,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(  private usersService: UsersService,
                 private jobsService: JobsService,
-                private searchService: SearchService) {  }
+                private searchService: SearchService,
+                private entrevistasService: EntrevistasService) {  }
 
   ngOnInit(): void {
 
@@ -37,6 +34,9 @@ export class DashboardComponent implements OnInit {
 
     // CARGAR JOBS PENDIENTES
     this.loadJobs();
+    
+    // CARGAR ENTREVISTAS PENDIENTES
+    this.cargarEntrevistas();
 
   }
 
@@ -186,6 +186,24 @@ export class DashboardComponent implements OnInit {
           this.loadJobs();          
 
         })
+
+  }
+
+  /** ================================================================
+   *  CARGAR ENTREVISTAS status
+confirm
+  ==================================================================== */
+  public entrevistas: Entrevista[] = [];
+  cargarEntrevistas(){
+
+    let query = '?cancel=false&confirm=none';
+
+    this.entrevistasService.loadEntrevistasStatus(query)
+        .subscribe( ({entrevistas}) => {
+          
+          this.entrevistas = entrevistas;          
+
+        });
 
   }
 
