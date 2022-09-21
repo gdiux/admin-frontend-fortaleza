@@ -126,6 +126,11 @@ export class PerfilComponent implements OnInit {
               
             }
 
+            Swal.fire('Estupendo', 'El perfil se ha actualizado con exito', 'success');
+
+          }, (err) => {
+            console.log(err);
+            Swal.fire('Error', err.error.msg, 'error');
           });
 
         });
