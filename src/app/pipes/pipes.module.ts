@@ -3,12 +3,19 @@ import { CommonModule } from '@angular/common';
 
 // PIPES
 import { ImagenPipe } from './imagen.pipe';
+import { FechaPipe } from './fecha.pipe';
 
 
 
 @NgModule({
-  declarations: [ImagenPipe],
-  exports: [ImagenPipe],
+  declarations: [
+    ImagenPipe, 
+    FechaPipe
+  ],
+  exports: [
+    ImagenPipe,
+    FechaPipe
+  ],
   imports: [
     CommonModule
   ]

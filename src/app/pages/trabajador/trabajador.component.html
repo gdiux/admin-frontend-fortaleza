@@ -164,7 +164,7 @@
                                     <h6>
                                         {{ file.desc }}
                                         <br>
-                                        <small class="text-muted">fecha: {{ file.fecha | date:'short' }}</small>
+                                        <small class="text-muted">fecha: {{ file.fecha | fecha }}</small>
                                     </h6>
                                 </td>
 
@@ -257,7 +257,7 @@
 
                                 <td> {{ job.sueldo | currency:'COP' }} </td>
 
-                                <td><span class="label label-success label-rounded"> {{ job.fechain | date:'short' }} </span></td>
+                                <td><span class="label label-success label-rounded"> {{ job.fechain | fecha }} </span></td>
                                 <td>
                                     <!-- selectJob -->
                                     <button (click)="selectJob(job)" data-toggle="modal" data-target="#selectJob" type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn text-success">
@@ -336,7 +336,7 @@
 
                             <tr *ngFor="let item of entrevistas">
                                 <td> {{ item.control }} </td>
-                                <td> {{ item.day | date:'M/d/yy, h:mm a' }} </td>
+                                <td> {{ item.day | fecha }} </td>
                                 <td>
                                     <span *ngIf="!item.confirm" class="label label-warning label-rounded">Pediente</span>
                                     <span *ngIf="item.confirm" class="label label-success label-rounded">Confirmada</span>
@@ -498,7 +498,7 @@
                         <br>
                         <p class="text-justify ">
                             El colaborador (a) <span class="font-weight-bold">{{ worker.name }}</span>, con Cédula de Ciudadanía número <span class="font-weight-bold">{{ worker.cedula | number }}</span>, labora al servicio de esta compañía desde el {{
-                            jobSelect.fechain | date:'d/M/yy' }} a la fecha, mediante un contrato de Obra o Labor Contratada desempeñando el cargo de <span class="font-weight-bold"> {{ jobSelect.name
+                            jobSelect.fechain | fecha }} a la fecha, mediante un contrato de Obra o Labor Contratada desempeñando el cargo de <span class="font-weight-bold"> {{ jobSelect.name
                             }} </span> en la empresa usuaria <span class="font-weight-bold">{{ jobSelect.bussiness.name }}</span>.
                         </p>
                         <br>
