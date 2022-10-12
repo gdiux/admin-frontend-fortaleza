@@ -58,9 +58,136 @@ export class TrabajadorComponent implements OnInit {
           this.cargarJobs();
           this.cargarEntrevistas();
 
+          this.formEdit.reset({
+            name: worker.name,
+            cedula: worker.cedula,
+            phone: worker.phone,
+            address: worker.address,
+            city: worker.city,
+            department: worker.department,
+            barrio: worker.barrio
+          });
+
         });
 
   }
+
+  /** ================================================================
+   *  EDITAR PERFIL DEL TRABAJADOR
+  ==================================================================== */
+  public formSubmiteEdit: boolean = false;
+  public formEdit = this.fb.group({
+    name: [ '', [Validators.required]],
+    cedula: [ '', [Validators.required]],
+    phone: [ '', [Validators.required]],
+    address: [ '', [Validators.required]],
+    city: [ '', [Validators.required]],
+    department: [ '', [Validators.required]],
+    barrio: [ '', [Validators.required]]
+  });
+
+  editarPerfil(){
+
+    this.formSubmiteEdit = true;
+
+    if (this.formEdit.invalid) {
+      return;
+    }
+
+    this.workersService.updateWorker(this.formEdit.value, this.worker.wid)
+        .subscribe( ({worker}) => {
+
+          this.formSubmiteEdit = false;
+          this.worker = worker;
+
+          this.formEdit.reset({
+            name: worker.name,
+            cedula: worker.cedula,
+            phone: worker.phone,
+            address: worker.address,
+            city: worker.city,
+            department: worker.department,
+            barrio: worker.barrio
+          });
+
+          Swal.fire('Estupendo', 'Se ha actualizado el perfil del colaborador exitosamente!', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+          
+        });
+
+  }
+
+  /** ======================================================================
+   * VALIDATE UPDATE EDIT FORM
+  ====================================================================== */
+  validateEdit( campo: string): boolean{
+    
+    if ( this.formEdit.get(campo)?.invalid && this.formSubmiteEdit ) {      
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
+  /** ================================================================
+   *  CAMBIAR CONTRASEÑA
+  ==================================================================== */
+  public formSubmitePass: boolean = false;
+  public formPass = this.fb.group({
+    password: [ '', [Validators.required, Validators.minLength(6)]],
+    repassword: [ '', [Validators.required, Validators.minLength(6)]],
+  });
+
+  editarPassword(){
+
+    this.formSubmitePass = true;
+
+    if (this.formPass.invalid) {
+      return;
+    }
+
+    if (this.formPass.value.password !== this.formPass.value.repassword) {
+      Swal.fire('Error', 'Las contraseñas no son iguales', 'error');
+      return;
+    }
+
+    this.workersService.updateWorker(this.formPass.value, this.worker.wid)
+        .subscribe( ({worker}) => {
+
+          this.formSubmitePass = false;
+
+          this.formPass.reset({
+            password: '',
+            repassword: '',
+          });
+
+          Swal.fire('Estupendo', 'Se ha cambiado la contraseña exitosamente!', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+          
+        });
+
+  }
+
+  /** ======================================================================
+   * VALIDATE UPDATE EDIT FORM
+  ====================================================================== */
+  validatePassword( campo: string): boolean{
+    
+    if ( this.formPass.get(campo)?.invalid && this.formSubmitePass ) {      
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
 
   /** ================================================================
    *  APROBAR ARCHIVOS
@@ -315,7 +442,6 @@ export class TrabajadorComponent implements OnInit {
         .subscribe( ({entrevistas}) => {
 
           this.entrevistas = entrevistas;
-          console.log(entrevistas);
           
         });
 

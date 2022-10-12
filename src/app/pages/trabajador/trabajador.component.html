@@ -34,6 +34,11 @@
                 <div>
                     <h4 class="card-title"><span class="lstick"></span>Dirección</h4>
                 </div>
+                <div class="ml-auto">
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#editPerfil">
+                        Editar Perfil
+                    </button>
+                </div>
             </div>
 
             <div class="row">
@@ -288,15 +293,18 @@
                 <h3 class="m-b-0"> {{ worker.name }} </h3>
                 <p class="mb-3 text-muted"> CC: {{worker.cedula || '--------'}} </p>
 
-                <button (click)="asginar(worker.type)" type="button" class="btn waves-effect waves-light btn-primary btn-sm">
+                <button (click)="asginar(worker.type)" type="button" class="btn waves-effect waves-light btn-primary btn-sm mb-2">
                     <span *ngIf="worker.type === 'Aspirante'">Contratar</span>
                     <span *ngIf="worker.type === 'Trabajador'">Desvincular</span>
                 </button>
-                <ul class="list-inline soc-pro m-t-30">
+                <!-- <ul class="list-inline soc-pro m-t-30">
                     <li><a href="javascript:void(0)"><i class="fa fa-twitter"></i></a></li>
                     <li><a href="javascript:void(0)"><i class="fa fa-facebook-square"></i></a></li>
                     <li><a href="javascript:void(0)"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
+                </ul> -->
+                <br>
+                <a class="text-decoration-none text-primary pointer" data-toggle="modal" data-target="#editPassword">Cambiar Contraseña</a>
+
             </div>
 
         </div>
@@ -588,3 +596,128 @@
     </div>
 </div>
 <!-- MODAL CREAR ENTREVISTA -->
+
+<!-- MODAL EDITAR PERFIL DEL TRABAJADOR -->
+<div class="modal fade" id="editPerfil" tabindex="-1" aria-labelledby="editPerfilLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPerfilLabel">Editar perfil de <span *ngIf="worker">{{worker.name}}</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                <form *ngIf="worker!" class="form-horizontal form-material" autocomplete="off" [formGroup]="formEdit" (ngSubmit)="editarPerfil()">
+
+                    <div class="form-group has-danger">
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="name" type="text" class="form-control" placeholder="Nombres">
+                            <div *ngIf="validateEdit('name')" class="form-control-feedback">
+                                <small> Los nombres son obligatorios </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="cedula" type="text" class="form-control" placeholder="Cedula">
+                            <div *ngIf="validateEdit('cedula')" class="form-control-feedback">
+                                <small> La cedula es obligatoria </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                            <div *ngIf="validateEdit('phone')" class="form-control-feedback">
+                                <small> El teelfono es obligatorio </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="address" type="text" class="form-control" placeholder="Dirección">
+                            <div *ngIf="validateEdit('address')" class="form-control-feedback">
+                                <small> La dirección es obligatoria </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="city" type="text" class="form-control" placeholder="Ciudad">
+                            <div *ngIf="validateEdit('city')" class="form-control-feedback">
+                                <small> La ciudad es obligatoria </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="department" type="text" class="form-control" placeholder="Departamento">
+                            <div *ngIf="validateEdit('department')" class="form-control-feedback">
+                                <small> El departamento es obligatorio </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="barrio" type="text" class="form-control" placeholder="barrio">
+                            <div *ngIf="validateEdit('barrio')" class="form-control-feedback">
+                                <small> Este campo es obligatorio </small>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <button type="submit" class="btn btn-info waves-effect btn-block">Actualizar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-secondary ms-auto" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL EDITAR PERFIL DEL TRABAJADOR -->
+
+<!-- MODAL EDITAR PASSWORD -->
+<div class="modal fade" id="editPassword" tabindex="-1" aria-labelledby="editPasswordLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPasswordLabel">Cambiar Contraseña del trabajador <span *ngIf="worker">{{worker.name}}</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                <form *ngIf="worker!" class="form-horizontal form-material" autocomplete="off" [formGroup]="formPass" (ngSubmit)="editarPassword()">
+
+                    <div class="form-group has-danger">
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="password" type="password" class="form-control" placeholder="Contraseña">
+                            <div *ngIf="validatePassword('password')" class="form-control-feedback">
+                                <small> Este campo es obligatorio, minimo 6 caracteres</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 m-b-20">
+                            <input formControlName="repassword" type="password" class="form-control" placeholder="Repetir Contraseña">
+                            <div *ngIf="validatePassword('repassword')" class="form-control-feedback">
+                                <small> Este campo es obligatorio, minimo 6 caracteres</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-info waves-effect btn-block">Actualizar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-secondary ms-auto" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL EDITAR PASSWORD -->
