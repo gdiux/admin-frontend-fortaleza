@@ -566,6 +566,41 @@ export class TrabajadorComponent implements OnInit {
   }
 
   /** ================================================================
+   *   ELIMINAR TRABAJO
+  ==================================================================== */
+  eliminarTrabajo(jid: string){
+
+    Swal.fire({
+      title: 'Atención?',
+      text: "Estas seguro de eliminar esta asignación al trabajador?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this.jobsService.deleteWorkerJob(jid, this.worker.wid)
+            .subscribe( ({jobs, total}) => {
+
+              this.jobs = jobs;
+
+              if (total === 0) {
+                this.asginar('Trabajador');
+              }
+              
+
+            });
+
+      }
+    })
+    
+
+  }
+
+  /** ================================================================
    *   PDF
   ==================================================================== */
   downloadPDF() {

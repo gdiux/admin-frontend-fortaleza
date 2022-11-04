@@ -81,6 +81,13 @@ export class JobsService {
     return this.http.delete(`${base_url}/jobs/${jid}`, this.headers);
   }
 
+  /** ================================================================
+   *   DELETE JOB
+  ==================================================================== */
+  deleteWorkerJob( jid: string, worker: string ){
+    return this.http.delete<LoadJobs>(`${base_url}/jobs/${jid}/${worker}`, this.headers);
+  }
+
 
   // FIN DE LA CLASE
 }
