@@ -39,7 +39,7 @@ export class PerfilComponent implements OnInit {
               this.loadUser(id);
 
             }else{
-              Swal.fire('Atención', 'No tienes los privilegios para estar aqui', 'warning');
+              Swal.fire('Attention', "You don't have the privileges to be here", 'warning');
               this.router.navigateByUrl('/');
               return;              
             }
@@ -126,7 +126,7 @@ export class PerfilComponent implements OnInit {
               
             }
 
-            Swal.fire('Estupendo', 'El perfil se ha actualizado con exito', 'success');
+            Swal.fire('Great', 'Profile has been successfully updated', 'success');
 
           }, (err) => {
             console.log(err);

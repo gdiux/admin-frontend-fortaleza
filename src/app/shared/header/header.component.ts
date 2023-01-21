@@ -5,8 +5,6 @@ import { User } from 'src/app/models/users.model';
 
 // SERVICE
 import { UsersService } from '../../services/users.service';
-import { SearchService } from 'src/app/services/search.service';
-import { Product } from 'src/app/models/products.model';
 
 @Component({
   selector: 'app-header',
