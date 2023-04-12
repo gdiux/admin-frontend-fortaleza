@@ -145,6 +145,7 @@ export class TrabajadoresComponent implements OnInit {
               telefono: trabajador.phone,
               ciudad: trabajador.city,
               direccion: trabajador.address,
+              barrio: trabajador.barrio,
               tipo: trabajador.type
             })
             
