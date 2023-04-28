@@ -169,9 +169,9 @@
                                     <h6>
                                         {{ file.desc }} <span *ngIf="file.desc === 'EPS' || file.desc === 'Caja de Caja de Compensacion'">- {{file.tipo || 'No especifico'}}</span>
                                         <br>
-                                        <p *ngIf="file.beneficiario" class="mb-0"> - {{ file.beneficiario}} </p>
-                                        <p *ngIf="file.beneficiario" class="mb-0"> - {{ file.numero}} </p>
-                                        <p *ngIf="file.beneficiario" class="mb-0"> - {{ file.parentesco}} </p>
+                                        <p *ngIf="file.beneficiario !== 'No' && file.beneficiario " class="mb-0"> - {{ file.beneficiario}} </p>
+                                        <p *ngIf="file.numero !== 'No' && file.numero " class="mb-0"> - {{ file.numero}} </p>
+                                        <p *ngIf="file.parentesco !== 'No' && file.parentesco " class="mb-0"> - {{ file.parentesco}} </p>
                                         <small class="text-muted">fecha: {{ file.fecha | fecha }}</small>
                                     </h6>
                                 </td>
