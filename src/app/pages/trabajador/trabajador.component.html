@@ -446,12 +446,32 @@
                     </div>
                 </div>
 
+                <div class="mb-3" [ngClass]="{'d-block': tipeD.includes(desc.value), 'd-none': !tipeD.includes(desc.value)}">
+                    <label for="tipo" class="form-label">Tipo de {{ desc.value }}</label>
+                    <input type="text" value="No" class="form-control" id="tipo" placeholder="Tipo de {{ desc.value }}" #tipo>
+                </div>
+
+                <div [ngClass]="{'d-block': tipeD.includes(desc.value), 'd-none': !tipeD.includes(desc.value)}" class="mb-3 d-none">
+                    <label for="beneficiario" class="form-label">Beneficiario</label>
+                    <input type="text" value="No" class="form-control" id="beneficiario" placeholder="Beneficiario" #beneficiario>
+                </div>
+
+                <div [ngClass]="{'d-block': tipeD.includes(desc.value), 'd-none': !tipeD.includes(desc.value)}" class="mb-3 d-none">
+                    <label for="numero" class="form-label">Numero de documento</label>
+                    <input type="text" value="No" class="form-control" id="numero" placeholder="Numero de documento" #numero>
+                </div>
+
+                <div [ngClass]="{'d-block': tipeD.includes(desc.value), 'd-none': !tipeD.includes(desc.value)}" class="mb-3 d-none">
+                    <label for="parentesco" class="form-label">Parentesco</label>
+                    <input type="text" value="No" class="form-control" id="parentesco" placeholder="Parentesco" #parentesco>
+                </div>
+
                 <div class="form-group">
                     <label for="exampleFormControlFile1">Subir archivo</label>
                     <input type="file" class="form-control-file" id="exampleFormControlFile1" #file (change)="selecArch($event.target)">
                 </div>
 
-                <button [disabled]="loading" (click)="subirArch(desc.value)" type="button" name="" id="" class="btn btn-primary btn-sm">
+                <button [disabled]="loading" (click)="subirArch(desc.value, tipo.value || 'No', parentesco.value || 'No', numero.value || 'No', beneficiario.value || 'No')" type="button" name="" id="" class="btn btn-primary btn-sm">
                     <span *ngIf="!loading">                            
                         Guardar
                     </span>
@@ -632,9 +652,16 @@
                         </div>
 
                         <div class="col-md-12 m-b-20">
+                            <input formControlName="email" type="email" class="form-control" placeholder="Email">
+                            <div *ngIf="validateEdit('email')" class="form-control-feedback">
+                                <small> El email es obligatorio </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 m-b-20">
                             <input formControlName="phone" type="text" class="form-control" placeholder="Telefono">
                             <div *ngIf="validateEdit('phone')" class="form-control-feedback">
-                                <small> El teelfono es obligatorio </small>
+                                <small> El telefono es obligatorio </small>
                             </div>
                         </div>
 

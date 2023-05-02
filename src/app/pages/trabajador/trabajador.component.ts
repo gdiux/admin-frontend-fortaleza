@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -62,6 +62,7 @@ export class TrabajadorComponent implements OnInit {
             name: worker.name,
             cedula: worker.cedula,
             phone: worker.phone,
+            email: worker.email,
             address: worker.address,
             city: worker.city,
             department: worker.department,
@@ -79,6 +80,7 @@ export class TrabajadorComponent implements OnInit {
   public formEdit = this.fb.group({
     name: [ '', [Validators.required]],
     cedula: [ '', [Validators.required]],
+    email: [ '', [Validators.required, Validators.email]],
     phone: [ '', [Validators.required]],
     address: [ '', [Validators.required]],
     city: [ '', [Validators.required]],
@@ -104,6 +106,7 @@ export class TrabajadorComponent implements OnInit {
             name: worker.name,
             cedula: worker.cedula,
             phone: worker.phone,
+            email: worker.email,
             address: worker.address,
             city: worker.city,
             department: worker.department,
@@ -316,12 +319,26 @@ export class TrabajadorComponent implements OnInit {
   public subirArchivo!: File;
   public imgProducto: string = 'no-image';
   public loading: boolean = false;
+  public tipeD =  ['EPS', 'Caja de Compensacion'];
+  @ViewChild('tipo')          tipo!: ElementRef;
+  @ViewChild('parentesco')    parentesco!: ElementRef;
+  @ViewChild('numero')        numero!: ElementRef;
+  @ViewChild('beneficiario')  beneficiario!: ElementRef;
 
-  subirArch(desc: any ): any{
+  subirArch(desc: any, tipo: string = 'No', parentesco: string = 'No', numero: string = 'No', beneficiario: string = 'No' ): any{
+
+    if (  this.tipeD.includes(tipo) ||
+          tipo.length === 0 ||
+          parentesco.length === 0 ||
+          numero.length === 0 ||
+          beneficiario.length === 0) {
+      Swal.fire('Atención!', 'Todos los datos son importantes', 'info');
+      return;
+    }
 
     this.loading = true;
     
-    this.fileUploadService.updateFiles( this.subirArchivo, this.typeFile, desc, this.worker.wid)
+    this.fileUploadService.updateFiles( this.subirArchivo, this.typeFile, desc, this.worker.wid, tipo, parentesco, numero, beneficiario)
     .then( data => {  
     
 
@@ -340,6 +357,11 @@ export class TrabajadorComponent implements OnInit {
       this.loading = false;
       
       Swal.fire('Estupendo', 'Se ha guardado el archivo exitosamente!', 'success');
+
+      this.tipo.nativeElement.value = 'No';
+      this.parentesco.nativeElement.value = 'No';
+      this.numero.nativeElement.value = 'No';
+      this.beneficiario.nativeElement.value = 'No';
 
       
     })

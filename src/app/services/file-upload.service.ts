@@ -82,10 +82,14 @@ export class FileUploadService {
     archivo: File,
     type: 'img' | 'archivos' ,
     desc: 'Pruebas Psicotecnicas' |'Examen Medico' | 'Cedula Ciudadania' | 'Hoja de vida' | 'Registro Civil' | 'Registro de Matrimonio' | 'EPS' | 'Pensiones' | 'Cesantias' | 'Banco' | 'Caja de Compensacion' | 'RUT' | 'Antecedentes',
-    id: string
+    id: string,
+    tipo: string, 
+    parentesco: string, 
+    numero: string,
+    beneficiario: string,
   ){
       
-      const url = `${fortaleza_url}/uploads/files/${type}/${desc}/${id}`;
+      const url = `${fortaleza_url}/uploads/files/${type}/${desc}/${id}/${tipo}/${parentesco}/${numero}/${beneficiario}`;
 
       const formData = new FormData();
       formData.append('image', archivo);
