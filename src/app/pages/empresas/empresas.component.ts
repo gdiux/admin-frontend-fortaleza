@@ -1,4 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 // MODELS
 import { Bussiness } from 'src/app/models/bussiness.model';
@@ -6,7 +8,6 @@ import { Bussiness } from 'src/app/models/bussiness.model';
 // SERVICES
 import { BussinessService } from 'src/app/services/bussiness.service';
 import { SearchService } from 'src/app/services/search.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-empresas',
@@ -17,7 +18,8 @@ import Swal from 'sweetalert2';
 export class EmpresasComponent implements OnInit {
 
   constructor(  private bussinessService: BussinessService,
-                private searchService: SearchService) { }
+                private searchService: SearchService,
+                private fb: FormBuilder) { }
 
   ngOnInit(): void {
 
@@ -115,6 +117,66 @@ export class EmpresasComponent implements OnInit {
     this.limite = Number(cantidad);
     this.LoadBussiness();
     
+  }
+
+  /** ================================================================
+   *   CREATE BUSSINESS
+  ==================================================================== */
+  public formSubmited:  boolean = false;  
+  public btnSubmit:     boolean = false;
+  public valuePass:     boolean = false;
+  public formCreate = this.fb.group({
+    name:       ['',    [Validators.required, Validators.minLength(3)]],
+    email:      ['',    [Validators.required, Validators.email]],
+    nit:        ['',    [Validators.required]],
+    phone:      ['',    [Validators.required]],
+    password:   ['',    [Validators.required, Validators.minLength(6)]],
+    repassword: ['',    [Validators.required, Validators.minLength(6)]],
+  });
+
+  createBussiness(){
+
+    this.formSubmited = true;
+    this.valuePass = false;            
+    this.btnSubmit = true;
+
+    if (this.formCreate.invalid) {
+      this.btnSubmit = false;
+      return;
+    }
+    
+    if (this.formCreate.value.password != this.formCreate.value.repassword) {
+      this.valuePass = true;            
+      this.btnSubmit = false;
+      return;
+    }
+
+    this.bussinessService.createBussiness(this.formCreate.value)
+        .subscribe( ({bussiness}) => {
+
+          this.formSubmited = false;
+          this.formCreate.reset();
+          Swal.fire('Estupendo', `Se ha creado la empresa exitosamente!`, 'success');
+          
+          this.LoadBussiness();
+          
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
+
+  }
+
+  /** ======================================================================
+   * VALIDATE FORM
+  ====================================================================== */
+  validateForm( campo:string ): boolean{
+    if ( this.formCreate.get(campo)?.invalid && this.formSubmited ) {      
+      return true;
+    }else{
+      return false;
+    }
   }
 
 

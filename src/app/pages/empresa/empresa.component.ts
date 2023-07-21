@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Bussiness } from 'src/app/models/bussiness.model';
+import { FormBuilder, Validators } from '@angular/forms';
 
 import Swal from 'sweetalert2';
 
@@ -24,7 +25,8 @@ export class EmpresaComponent implements OnInit {
   constructor(  private activatedRoute: ActivatedRoute,
                 private bussinessService: BussinessService,
                 private jobsService: JobsService,
-                private searchService: SearchService) { }
+                private searchService: SearchService,
+                private fb: FormBuilder) { }
 
   ngOnInit(): void {
 
@@ -49,16 +51,133 @@ export class EmpresaComponent implements OnInit {
           this.bussiness = bussiness;
           this.loadJobs();
 
+          this.editBussineessForm.setValue({
+            name: this.bussiness.name,
+            nit: this.bussiness.nit,
+            phone: this.bussiness.phone,
+            email: this.bussiness.email,
+            address: this.bussiness.address,
+            city: this.bussiness.city,
+            department: this.bussiness.department,
+          })
+
         });
 
   }
 
+  /** ================================================================
+   *  EDITAR BUSSINESS
+  ==================================================================== */
+  public editBussinessSubmited: boolean = false;
+  public editBussineessForm = this.fb.group({
+    name: ['', [Validators.required]],
+    nit: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
+    email: ['', [Validators.required]],
+    address: ['', [Validators.required]],
+    city: ['', [Validators.required]],
+    department: ['', [Validators.required]],
+
+  });
+
+  editarBussiness(){
+
+    this.editBussinessSubmited = true;
+
+    if( this.editBussineessForm.invalid ){
+      return;
+    }
+
+
+    this.bussinessService.updateBussiness(this.editBussineessForm.value, this.bussiness.bid)
+        .subscribe( ({bussiness}) => {
+
+          this.editBussinessSubmited = false;
+          this.loadBussiness(this.bussiness.bid!);
+          Swal.fire('Estupendo', 'Se ha modificado correctamente la empresa', 'success');
+
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg);          
+        })
+
+
+  }
+
+    /** ======================================================================
+   * VALIDATE FORM
+  ====================================================================== */
+  validateEdit( campo:string ): boolean{
+    if ( this.editBussineessForm.get(campo)?.invalid && this.editBussinessSubmited ) {      
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+   /** ================================================================
+   *  CAMBIAR CONTRASEÑA
+  ==================================================================== */
+  public formSubmitePass: boolean = false;
+  public formPass = this.fb.group({
+    password: [ '', [Validators.required, Validators.minLength(6)]],
+    repassword: [ '', [Validators.required, Validators.minLength(6)]],
+  });
+
+  editarPassword(){
+
+    this.formSubmitePass = true;
+
+    if (this.formPass.invalid) {
+      return;
+    }
+
+    if (this.formPass.value.password !== this.formPass.value.repassword) {
+      Swal.fire('Error', 'Las contraseñas no son iguales', 'error');
+      return;
+    }
+
+    this.bussinessService.updateBussiness(this.formPass.value, this.bussiness.bid!)
+        .subscribe( ({bussiness}) => {
+
+          this.formSubmitePass = false;
+
+          this.formPass.reset({
+            password: '',
+            repassword: '',
+          });
+
+          Swal.fire('Estupendo', 'Se ha cambiado la contraseña exitosamente!', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+          
+        });
+
+  }
+
+  /** ======================================================================
+   * VALIDATE UPDATE EDIT FORM
+  ====================================================================== */
+  validatePassword( campo: string): boolean{
+    
+    if ( this.formPass.get(campo)?.invalid && this.formSubmitePass ) {      
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
+
   /** ==============================================================================
   /** ==============================================================================
   /** ==============================================================================
   /** ==============================================================================
   /** ==============================================================================
-   *  LOAD JOBS BUSSINESS
+   *  LOAD JOBS BUSSINESS 
   ===================================================================================*/
   public jobs: Job[] = [];
   loadJobs(){
@@ -201,6 +320,50 @@ export class EmpresaComponent implements OnInit {
 
         })
 
+  }
+
+  /** ======================================================================
+   * NEW JOB
+  ====================================================================== */
+  public formSubmited: boolean = false;
+  public formCreate = this.fb.group({
+    name: ['', [Validators.required]],
+    description: ['', [Validators.required]],
+    sueldo: ['', [Validators.required]],
+  });
+
+  createJob(){
+
+    this.formSubmited = true;
+
+    if (this.formCreate.invalid) {
+      return;
+    }
+
+    this.jobsService.createJob(this.formCreate.value, this.bussiness.bid!)
+        .subscribe( ({job}) => {
+
+          this.formSubmited = false;
+          this.formCreate.reset();
+          this.loadBussiness(this.bussiness.bid!);
+          Swal.fire('Estupendo', 'se ha creado la oferta nueva exitosamente!', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+          
+        });
+  }
+
+  /** ======================================================================
+   * VALIDATE FORM
+  ====================================================================== */
+  validateForm( campo:string ): boolean{
+    if ( this.formCreate.get(campo)?.invalid && this.formSubmited ) {      
+      return true;
+    }else{
+      return false;
+    }
   }
 
 

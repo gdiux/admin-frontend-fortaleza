@@ -70,6 +70,13 @@ export class BussinessService {
     return this.http.post(`${base_url}/login/recuperar/password/bussiness`, formData);
   }
 
+  /** ================================================================
+   *   POST BUSSINESS
+  ==================================================================== */
+  createBussiness(formaData: any){
+    return this.http.post<{ ok: boolean, bussiness: Bussiness }>(`${base_url}/bussiness`, formaData);
+  }
+
 
   // FIN DE LA CLASE
 }

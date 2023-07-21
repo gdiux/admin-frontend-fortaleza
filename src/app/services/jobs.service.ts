@@ -63,8 +63,8 @@ export class JobsService {
   /** ================================================================
    *   POST JOB
   ==================================================================== */
-  createJob(formaData: any){
-    return this.http.post<{ ok: boolean, job: Job }>(`${base_url}/jobs`, formaData, this.headers);
+  createJob(formaData: any, bid: string){
+    return this.http.post<{ ok: boolean, job: Job }>(`${base_url}/jobs/${bid}`, formaData, this.headers);
   }
 
   /** ================================================================

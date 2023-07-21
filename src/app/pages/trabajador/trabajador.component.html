@@ -537,7 +537,8 @@
                         </p>
                         <br>
 
-                        <p class="text-justify">La presente se expide en la ciudad de Bucaramanga a solicitud del trabajador {{ worker.name }} dirigida a QUIEN INTERESE, con fecha {{ dateActual | date:'d, MMMM, y' }}.</p>
+                        <p class="text-justify">La presente se expide en la ciudad de <span class="text-capitalize"> {{ worker.city || 'Bucaramanga' }} </span> a solicitud del trabajador {{ worker.name }} dirigida a QUIEN INTERESE, con fecha {{ dateActual | date:'d, MMMM, y'
+                            }}.</p>
 
                         <br>
                         <br>
